@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Compliance Verifier</title>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; max-width: 600px; }
+        textarea { width: 100%; height: 150px; font-size: 16px; }
+        button { padding: 10px 20px; font-size: 16px; margin-top: 10px; cursor: pointer; }
+        #result { margin-top: 20px; white-space: pre-line; background: #f7f7f7; padding: 12px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>AI Compliance Verifier</h1>
+    <p>Paste content or a link for verification:</p>
+    <ul>
+        <li>✅ Text (news excerpt, social post, video description)</li>
+        <li>🔗 Direct link (e.g., news page, blog, short video URL)</li>
+    </ul>
+    <textarea id="userInput" placeholder="Type or paste link here..."></textarea>
+    <br>
+    <button onclick="submitContent()">Verify</button>
+    <div id="result">Result will appear here...</div>
+
+    <script>
+        async function submitContent() {
+            const content = document.getElementById("userInput").value.trim();
+            if (!content) {
+                document.getElementById("result").innerText = "⚠️ Please enter some text or a link.";
+                return;
+            }
+            document.getElementById("result").innerText = "⏳ Analyzing, please wait...";
+            try {
+                const response = await fetch("https://yourname.pythonanywhere.com/verify", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ content: content })
+                });
+                if (!response.ok) {
+                    throw new Error("Server error: " + response.status);
+                }
+                const data = await response.json();
+                document.getElementById("result").innerText = data.message || "No result returned.";
+            } catch (err) {
+                document.getElementById("result").innerText = "❌ Error: " + err.message;
+            }
+        }
+    </script>
+</body>
+</html>
