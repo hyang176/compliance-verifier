@@ -31,7 +31,7 @@
             }
             document.getElementById("result").innerText = "⏳ Analyzing, please wait...";
             try {
-                const response = await fetch("https://hyang19.pythonanywhere.com/verify", {
+                const response = await fetch("/api/verify", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ content: content })
